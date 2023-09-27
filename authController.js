@@ -76,5 +76,26 @@ class authController {
         res.json(user);
     } catch (error) {}
   }
+  async rename(req, res) {
+    try {
+      const {newUsername,oldUsername} = req.body;
+      console.log(oldUsername,newUsername)
+      const user = await User.findOne({username: newUsername})
+      if(user){
+        return res.status(400).json({message:`Пользователь с именем ${newUsername} уже имеется! `})
+      }
+      const currentUser = await User.findOne({username: oldUsername})
+      if(!currentUser){
+        return res.status(400).json({message:`Пользователь со старым именем ${oldUsername} не найден! `})
+      }
+      currentUser.username = newUsername;
+      await currentUser.save();
+      return res.json({ message: 'Имя пользователя успешно изменено' });
+
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error renaming user' });
+    }
+  }
 }
 module.exports = new authController();
