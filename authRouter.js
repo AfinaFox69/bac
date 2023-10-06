@@ -20,5 +20,6 @@ router.post('/login', controller.login);
 router.get('/users', controller.getUser);
 router.get('/me', authMiddleware, controller.me);
 router.put('/rename', controller.rename);
+router.post('/upload',controller.upl)
 
 module.exports = router;

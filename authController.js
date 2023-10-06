@@ -29,7 +29,7 @@ class authController {
       const hashPassword = bcrypt.hashSync(password, 7);
       const userRole = await Role.findOne({ value: 'USER' });
 
-      const user = new User({ username, password: hashPassword, roles: [userRole.value] });
+      const user = new User({ username, password: hashPassword, roles: [userRole.value] , avatar: '/uploads/test.png'});
 
       await user.save();
       return res.json({ message: 'Пользователь успешно зарегестрирован' });
@@ -52,7 +52,7 @@ class authController {
             return res.status(400).json({message:'Неверный пароль'})
         }
         const token = generateAccesToken(user._id, user.roles)
-        return res.json({token})
+        return res.json({token,user})
     } catch (error) {
       console.log(e);
       res.status(400).json({ message: 'Login error' });
@@ -96,6 +96,27 @@ class authController {
       console.log(error);
       res.status(400).json({ message: 'Error renaming user' });
     }
+  }
+  async upl(req,res){
+    console.log('--------------------------------')
+    console.log(req)
+    console.log('--------------------------------')
+    // try {
+    //   console.log(req)
+    //   console.log(req.file)
+    //   const oldUsername = req.body.oldUsername
+    //   const  {filename}  = req.file;
+    //   const currentUser = await User.findOne({username: oldUsername})
+    //   if (!currentUser) {
+    //     return res.status(404).json({ message: 'Пользователь не найден' });
+    //   }
+    //   currentUser.avatar = `/uploads/${filename}`;
+    //   await currentUser.save();
+    //   return res.json({ message: 'Аватар успешно обновлен' });
+    // } catch (error) {
+    //   console.log(error);
+    //   res.status(400).json({ message: 'Ошибка при обновлении аватара' });
+    // }
   }
 }
 module.exports = new authController();
