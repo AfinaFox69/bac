@@ -46,15 +46,12 @@ app.post("/upload", async function (req, res, next) {
       }
       currentUser.avatar = `/${filedata.path}`;
       await currentUser.save();
-      return res.json({ message: 'Аватар успешно обновлен' });
+      res.json(currentUser,currentUser)
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'Ошибка при обновлении аватара' });
     }
-    // if(!filedata)
-    //     res.send("Ошибка при загрузке файла");
-    // else
-    //     res.send("Файл загружен");
+
 });
 const start = async () => {
   try {
