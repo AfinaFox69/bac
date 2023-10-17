@@ -105,10 +105,30 @@ class authController {
       res.status(400).json({ message: 'Error renaming user' });
     }
   }
-
+  async upl(req, res) {
+    console.log('--------------------------------');
+    console.log(req);
+    console.log('--------------------------------');
+    // try {
+    //   console.log(req)
+    //   console.log(req.file)
+    //   const oldUsername = req.body.oldUsername
+    //   const  {filename}  = req.file;
+    //   const currentUser = await User.findOne({username: oldUsername})
+    //   if (!currentUser) {
+    //     return res.status(404).json({ message: 'Пользователь не найден' });
+    //   }
+    //   currentUser.avatar = `/uploads/${filename}`;
+    //   await currentUser.save();
+    //   return res.json({ message: 'Аватар успешно обновлен' });
+    // } catch (error) {
+    //   console.log(error);
+    //   res.status(400).json({ message: 'Ошибка при обновлении аватара' });
+    // }
+  }
   async repassword(req, res) {
     try {
-      const { oldUsername, newPassord } = req.body;
+      const { oldUsername, newPassord,oldPassword } = req.body;
       console.log(oldUsername, newPassord);
 
       const currentUser = await User.findOne({ username: oldUsername });
@@ -117,6 +137,12 @@ class authController {
           .status(400)
           .json({ message: `Пользователь со старым именем ${oldUsername} не найден! ` });
       }
+     const match = bcrypt.compareSync(oldPassword, currentUser.password)
+     if(!match){
+      return res
+          .status(400)
+          .json({ message: `Не тот пароль! ` }); 
+     }
 
       const hashPassword = bcrypt.hashSync(newPassord, 7);
       currentUser.password = hashPassword;
