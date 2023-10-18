@@ -34,7 +34,7 @@ class authController {
         password: hashPassword,
         roles: [userRole.value],
         avatar: '/uploads/test.png',
-        info:''
+        info:"test"
       });
 
       await user.save();
