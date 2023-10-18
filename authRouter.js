@@ -18,9 +18,11 @@ router.post(
 );
 router.post('/login', controller.login);
 router.get('/users', controller.getUser);
+router.post('/user', controller.getUserOne)
 router.get('/me', authMiddleware, controller.me);
 router.put('/rename', controller.rename);
 router.post('/upload',controller.upl)
 router.put('/repassword',controller.repassword)
+router.post('/info',controller.info)
 
 module.exports = router;

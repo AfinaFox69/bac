@@ -34,6 +34,7 @@ class authController {
         password: hashPassword,
         roles: [userRole.value],
         avatar: '/uploads/test.png',
+        info:''
       });
 
       await user.save();
@@ -64,10 +65,19 @@ class authController {
     }
   }
   async getUser(req, res) {
+    
     try {
       const users = await User.find();
 
       res.json(users);
+    } catch (error) {}
+  }
+  async getUserOne(req, res) {
+    const { username } = req.body;
+    try {
+      const user = await  User.findOne({ username });
+
+      res.json(user);
     } catch (error) {}
   }
   async me(req, res) {
@@ -80,6 +90,25 @@ class authController {
 
       res.json(user);
     } catch (error) {}
+  }
+  async info(req, res) {
+    try {
+      const { info, username} = req.body;
+      
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователь со  именем ${username} не найден! ` });
+      }
+      
+      user.info = info;
+      await user.save();
+      return res.json({ message: 'Инфо пользователя успешно изменено' });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error renaming user' });
+    }
   }
   async rename(req, res) {
     try {
