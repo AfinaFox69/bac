@@ -24,5 +24,7 @@ router.put('/rename', controller.rename);
 router.post('/upload',controller.upl)
 router.put('/repassword',controller.repassword)
 router.post('/info',controller.info)
+router.post('/addfavorites',controller.addfavorites)
+router.get('/getfavorites',controller.getfavorites)
 
 module.exports = router;

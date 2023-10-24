@@ -34,7 +34,8 @@ class authController {
         password: hashPassword,
         roles: [userRole.value],
         avatar: '/uploads/test.png',
-        info:"test"
+        info:"test",
+        favorites: [],
       });
 
       await user.save();
@@ -182,6 +183,44 @@ class authController {
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'Error renaming user' });
+    }
+  }
+  async addfavorites(req, res) {
+    try {
+      const { oldUsername, favoritesNew } = req.body;
+      const currentUser = await User.findOne({ username: oldUsername });
+      if (!currentUser) {
+        return res
+          .status(400)
+          .json({ message: `Пользователь со старым именем ${oldUsername} не найден! ` });
+      }
+      console.log('currentUser.favorites',currentUser,currentUser.favorites)
+      console.log('favoritesNew',favoritesNew)
+      currentUser.favorites.push(favoritesNew)
+      currentUser.save();
+
+      return res.json({
+        message: `Избранное пользователя успешно добавлено, ${favoritesNew}`,
+      });
+
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error add favorite user' });
+    }
+  }
+  async getfavorites(req, res) {
+    try {
+      const { oldUsername } = req.body;
+      const currentUser = await User.findOne({ username: oldUsername });
+      if (!currentUser) {
+        return res
+          .status(400)
+          .json({ message: `Пользователь со старым именем ${oldUsername} не найден! ` });
+      }
+      res.json(currentUser.favorites);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error add favorite user' });
     }
   }
 }
