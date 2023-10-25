@@ -6,7 +6,9 @@ const User = new Schema({
   avatar: {type: String},
   info: {type: String, required: true},
   roles: [{ type: String, ref: 'Role' }],
+  favorites: [{type:Object}]
 });
 
+
+
 module.exports = model('User', User);
- 
