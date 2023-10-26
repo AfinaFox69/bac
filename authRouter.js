@@ -26,5 +26,6 @@ router.put('/repassword',controller.repassword)
 router.post('/info',controller.info)
 router.post('/addfavorites',controller.addfavorites)
 router.post('/getfavorites',controller.getfavorites)
+router.delete('/deletefavorites',controller.deletefavorites)
 
 module.exports = router;

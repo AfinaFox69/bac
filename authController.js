@@ -223,5 +223,32 @@ class authController {
       res.status(400).json({ message: 'Error add favorite user' });
     }
   }
+  async deletefavorites(req, res) {
+    try {
+      const { oldUsername,imdbID } = req.body;
+      const currentUser = await User.findOne({ username: oldUsername });
+      if (!currentUser) {
+        return res
+          .status(400)
+          .json({ message: `Пользователь с именем ${oldUsername} не найден! ` });
+      }
+      const kek = currentUser.favorites.filter((item)=>{
+        if(item.imdbID === imdbID){
+          console.log(item.imdbID,imdbID)
+        }
+        return(
+          item.imdbID !== imdbID
+        )
+      })
+      
+      currentUser.favorites = kek
+      await currentUser.save();
+
+      res.json(currentUser.favorites);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error delete favorite user' });
+    }
+  }
 }
 module.exports = new authController();
