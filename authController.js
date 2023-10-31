@@ -36,7 +36,7 @@ class authController {
         avatar: '/uploads/test.png',
         info:"test",
         favorites: [],
-        time:  new Date().toLocaleTimeString(),
+        time:  new Date().toLocaleTimeString('ru-RU'),
       });
 
       await user.save();
@@ -60,7 +60,7 @@ class authController {
         return res.status(400).json({ message: 'Неверный пароль' });
       }
       const token = generateAccesToken(user._id, user.roles);
-      const tim = new Date().toLocaleTimeString()
+      const tim = new Date().toLocaleTimeString('ru-RU')
       user.time = tim;
       await user.save();
       return res.json({ token, user });
