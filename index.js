@@ -134,7 +134,7 @@ app.post('/chatall',async function(req,res){
       const kek2 = new Date().toLocaleTimeString()
       date2 = date2.setHours.apply(date2, kek2.split(":"));
       var diff = date1 < date2;
-      
+      console.log('date1',date1,'---','date2',date2)
       const now = (new Date().toISOString().slice(0,10).split('-').reverse().join('.'))
       const nowTime = new Date().toLocaleTimeString()
       if(item.date === now && item.sender !== username && diff===true ){
