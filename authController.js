@@ -282,5 +282,22 @@ class authController {
       res.status(400).json({ message: 'Error email user' });
     }
   }
+  async getEmail(req, res) {
+    try {
+      const {  username } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+
+      
+      return res.json(user.emailRead);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error email user' });
+    }
+  }
 }
 module.exports = new authController();
