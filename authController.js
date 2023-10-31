@@ -60,7 +60,8 @@ class authController {
         return res.status(400).json({ message: 'Неверный пароль' });
       }
       const token = generateAccesToken(user._id, user.roles);
-      user.time = new Date().toLocaleTimeString();
+      const tim = new Date().toLocaleTimeString()
+      user.time = tim;
       await user.save();
       return res.json({ token, user });
     } catch (error) {
