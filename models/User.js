@@ -6,7 +6,8 @@ const User = new Schema({
   avatar: {type: String},
   info: {type: String, required: true},
   roles: [{ type: String, ref: 'Role' }],
-  favorites: [{type:Object}]
+  favorites: [{type:Object}],
+  time: {type:String}
 });
 
 
