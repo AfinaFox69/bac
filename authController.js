@@ -36,6 +36,7 @@ class authController {
         avatar: '/uploads/test.png',
         info:"test",
         favorites: [],
+        time:  new Date().toLocaleTimeString(),
       });
 
       await user.save();
@@ -59,6 +60,8 @@ class authController {
         return res.status(400).json({ message: 'Неверный пароль' });
       }
       const token = generateAccesToken(user._id, user.roles);
+      user.time = new Date().toLocaleTimeString();
+      await user.save();
       return res.json({ token, user });
     } catch (error) {
       console.log(e);
@@ -248,6 +251,15 @@ class authController {
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'Error delete favorite user' });
+    }
+  }
+  async chat(req, res) {
+    try {
+     
+
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error chat' });
     }
   }
 }
