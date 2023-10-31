@@ -37,6 +37,7 @@ class authController {
         info:"test",
         favorites: [],
         time:  new Date().toLocaleTimeString('ru-RU'),
+        emailRead: 0,
       });
 
       await user.save();
@@ -261,6 +262,24 @@ class authController {
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'Error chat' });
+    }
+  }
+  async emailReading(req, res) {
+    try {
+      const {  username ,email} = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+
+      user.emailRead = email
+      await user.save();
+      return res.json(user.emailRead);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error email user' });
     }
   }
 }

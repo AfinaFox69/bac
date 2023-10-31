@@ -28,6 +28,6 @@ router.post('/addfavorites',controller.addfavorites)
 router.post('/getfavorites',controller.getfavorites)
 router.delete('/deletefavorites',controller.deletefavorites)
 router.get('/chat',controller.chat)
-
+router.post('/emailReading',controller.emailReading)
 
 module.exports = router;
