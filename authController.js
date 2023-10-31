@@ -49,7 +49,7 @@ class authController {
   async login(req, res) {
     try {
       //Пришедшие с запроса
-      const { username, password } = req.body;
+      const { username, password ,time} = req.body;
       //В базе данных ищем
       const user = await User.findOne({ username });
       if (!user) {
@@ -60,8 +60,7 @@ class authController {
         return res.status(400).json({ message: 'Неверный пароль' });
       }
       const token = generateAccesToken(user._id, user.roles);
-      const tim = new Date().toLocaleTimeString('ru-RU')
-      user.time = tim;
+      user.time = time;
       await user.save();
       console.log('user.time',user.time)
       return res.json({ token, user });
