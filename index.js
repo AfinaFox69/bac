@@ -137,7 +137,7 @@ app.post('/chatall',async function(req,res){
       console.log('date1',date1,'---','date2',date2)
       const now = (new Date().toISOString().slice(0,10).split('-').reverse().join('.'))
       const nowTime = new Date().toLocaleTimeString()
-      if(item.date === now && item.sender !== username && diff===true ){
+      if(item.sender !== username ){
           return item
         }
     })
