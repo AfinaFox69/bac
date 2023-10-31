@@ -7,7 +7,8 @@ const User = new Schema({
   info: {type: String, required: true},
   roles: [{ type: String, ref: 'Role' }],
   favorites: [{type:Object}],
-  time: {type:String}
+  time: {type:String},
+  emailRead: {type:Number}
 });
 
 
