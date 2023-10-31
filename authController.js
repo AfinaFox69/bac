@@ -63,6 +63,7 @@ class authController {
       const tim = new Date().toLocaleTimeString('ru-RU')
       user.time = tim;
       await user.save();
+      console.log('user.time',user.time)
       return res.json({ token, user });
     } catch (error) {
       console.log(e);
