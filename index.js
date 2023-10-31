@@ -122,7 +122,7 @@ const storageConfig = multer.diskStorage({
   },
 });
 app.post('/chatall',async function(req,res){
-  const { username } = req.body
+  const { username,time } = req.body
   const curUser =  await User.findOne({ username });
   const kek = ChatMessage.find({ room: 'main' })
   .then((chatMessages) => {
@@ -131,7 +131,7 @@ app.post('/chatall',async function(req,res){
       const kek1 = curUser.time
       date1 = date1.setHours.apply(date1, kek1.split(":"));
       var date2 =  new Date();
-      const kek2 = new Date().toLocaleTimeString()
+      const kek2 = time;
       date2 = date2.setHours.apply(date2, kek2.split(":"));
       var diff = date1 < date2;
       console.log('date1',date1,'---','date2',date2)
