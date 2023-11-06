@@ -19,7 +19,7 @@ const chatMessageSchema = new mongoose.Schema({
   socketId: String,
   room: String,
   date: String,
-  time:String,
+  time: String,
 });
 const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
 
@@ -56,13 +56,13 @@ io.on('connection', (socket) => {
       text: message,
       socketId: socket.id,
       room: params.room,
-      date: (new Date().toISOString().slice(0,10).split('-').reverse().join('.')),
+      date: new Date().toISOString().slice(0, 10).split('-').reverse().join('.'),
       time: new Date().toLocaleTimeString(),
     });
     try {
       await chatMessage.save();
       if (user) {
-        io.to(user.room).emit('message', { data: { user, message ,chatMessage} });
+        io.to(user.room).emit('message', { data: { user, message, chatMessage } });
       }
     } catch (err) {
       console.error(err);
@@ -121,43 +121,33 @@ const storageConfig = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-app.post('/chatall',async function(req,res){
-  const { username,time } = req.body
-  const curUser =  await User.findOne({ username });
+app.post('/chatall', async function (req, res) {
+  const { username, time } = req.body;
+  const curUser = await User.findOne({ username });
   const kek = ChatMessage.find({ room: 'main' })
-  .then((chatMessages) => {
-    const timeC = chatMessages.map((item)=>{
-      var date1 =  new Date();
-      const kek1 = curUser.time
-      date1 = date1.setHours.apply(date1, kek1.split(":"));
-      var date2 =  new Date();
-      const kek2 = time;
-      date2 = date2.setHours.apply(date2, kek2.split(":"));
-      var diff = date1 < date2;
-      console.log('date1',date1,'---','date2',date2)
-      const now = (new Date().toISOString().slice(0,10).split('-').reverse().join('.'))
-      const nowTime = new Date().toLocaleTimeString()
-      if(item.sender !== username ){
-          return item
+    .then((chatMessages) => {
+      const timeC = chatMessages.map((item) => {
+        var date1 = new Date();
+        const kek1 = curUser.time;
+        date1 = date1.setHours.apply(date1, kek1.split(':'));
+        var date2 = new Date();
+        const kek2 = time;
+        date2 = date2.setHours.apply(date2, kek2.split(':'));
+        var diff = date1 < date2;
+        console.log('date1', date1, '---', 'date2', date2);
+        const now = new Date().toISOString().slice(0, 10).split('-').reverse().join('.');
+        const nowTime = new Date().toLocaleTimeString();
+        if (item.sender !== username) {
+          return item;
         }
-    })
-    
-    res.json(timeC);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
-  // try {
-  //    const chat = ChatMessage.find({room: 'main'})
-  //    console.log('chat',chat)
-  //    res.json(chat);
-     
+      });
 
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(400).json({ message: 'Error all chat' });
-  // }
-})
+      res.json(timeC);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
 app.use(express.static(__dirname));
 
 const upload = multer({ storage: storageConfig });

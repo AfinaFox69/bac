@@ -31,4 +31,10 @@ router.get('/chat',controller.chat)
 router.post('/emailReading',controller.emailReading)
 router.post('/getemail',controller.getEmail)
 
+router.post('/sendmessage',controller.sendmessage)
+router.post('/getmessage',controller.getmessage)
+router.put('/updatemessage', controller.updatemessage);
+router.delete('/deletemessage', controller.deletemessage);
+
+
 module.exports = router;

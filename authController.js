@@ -38,6 +38,7 @@ class authController {
         favorites: [],
         time:  new Date().toLocaleTimeString('ru-RU'),
         emailRead: 0,
+        message: []
       });
 
       await user.save();
@@ -299,5 +300,98 @@ class authController {
       res.status(400).json({ message: 'Error email user' });
     }
   }
+  async sendmessage(req, res) {
+    try {
+      const { id, username,theme,text,date,time,read } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+      const ddd = {
+        id,
+        username: username,
+        theme: theme,
+        text,
+        time,
+        date,
+        read
+      }
+      user.message.push(ddd)
+      user.save()
+      return res.json(user.message);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error sendmessage user' });
+    }
+  }
+  async getmessage(req, res) {
+    try {
+      const {  username } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+
+  
+      return res.json(user.message);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error sendmessage user' });
+    }
+  }
+  async updatemessage(req, res) {
+    try {
+      const {  id,username } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+
+      const kek = user.message.find((item)=>item.id === id)
+      console.log('kek',kek)
+      kek.read = true
+      const items = Array.from(new Set([...user.message]))
+      const result = items.reduce((acc, item) => {
+        if (acc.includes(item)) {
+          return acc; // если значение уже есть, то просто возвращаем аккумулятор
+        }
+        return [...acc, item]; // добавляем к аккумулятору и возвращаем новый аккумулятор
+      }, []);
+      user.message = [...result,kek]
+      await user.save()
+      return res.json(user.message);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error sendmessage user' });
+    }
+  }
+  async deletemessage(req, res) {
+    try {
+      const {  id,username } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `Пользователья не существует ` });
+      }
+
+      const kek = user.message.filter((item)=>item.id !== id)
+      console.log('kek',kek)
+
+      user.message = kek
+      await user.save()
+      return res.json(user.message);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error sendmessage user' });
+    }
+  }
+
 }
 module.exports = new authController();
