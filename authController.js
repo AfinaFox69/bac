@@ -302,7 +302,7 @@ class authController {
   }
   async sendmessage(req, res) {
     try {
-      const { id, username,theme,text,date,time,read } = req.body;
+      const { id, username,theme,text,date,time,read,myname } = req.body;
       const user = await User.findOne({ username: username });
       if (!user) {
         return res
@@ -311,6 +311,7 @@ class authController {
       }
       const ddd = {
         id,
+        myname:myname,
         username: username,
         theme: theme,
         text,
