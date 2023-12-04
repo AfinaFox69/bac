@@ -401,7 +401,7 @@ class authController {
       if (!nameCurrent) {
         const nameCurrentZer = new Persons({
           id:id,
-          messages,messages
+          messages:messages
         })
         await nameCurrentZer.save()
         return res
