@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { secret } = require('./config');
+const Persons = require('./models/Persons');
 
 const generateAccesToken = (id, roles) => {
   const payload = {
@@ -391,6 +392,54 @@ class authController {
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: 'Error sendmessage user' });
+    }
+  }
+  async addMessagePerson(req, res) {
+    try {
+      const { id, messages } = req.body;
+      const nameCurrent = await Persons.findOne({ id: id });
+      if (!nameCurrent) {
+        const nameCurrentZer = new Persons({
+          id:id,
+          messages,messages
+        })
+        await nameCurrentZer.save()
+        return res
+          .status(200)
+          .json({ message: `Персона ${id} создан! ` });
+      }
+      console.log('nameCurrent',nameCurrent)
+      
+      nameCurrent.messages.push(messages)
+      nameCurrent.save();
+
+      return res.json({
+        message: `Сообщение добавлено, ${messages}`,
+      });
+
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error не добавлено' });
+    }
+  }
+
+  async getMessagePerson(req, res) {
+    try {
+      const { id } = req.body;
+      const nameCurrent = await Persons.findOne({ id: id });
+      if (!nameCurrent) {
+        
+        return res
+          .status(400)
+          .json({ message: `Персона ${id} не найдена! ` });
+      }
+      console.log('nameCurrent',nameCurrent)
+      
+      return res.json(nameCurrent);
+
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Error не добавлено' });
     }
   }
 

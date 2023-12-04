@@ -36,5 +36,8 @@ router.post('/getmessage',controller.getmessage)
 router.put('/updatemessage', controller.updatemessage);
 router.delete('/deletemessage', controller.deletemessage);
 
+router.post('/sendperson',controller.addMessagePerson)
+router.post('/getperson',controller.getMessagePerson)
+
 
 module.exports = router;
